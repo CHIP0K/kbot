@@ -22,7 +22,7 @@ var (
 var kbotCmd = &cobra.Command{
 	Use:     "kbot",
 	Aliases: []string{"start"},
-	Short:   "A brief description of your command",
+	Short:   "Run application",
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:
 
