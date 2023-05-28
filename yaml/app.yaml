@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: app
+  labels: 
+    app: demo
+    run: demo
+spec:
+  containers:
+    - image: us-central1-docker.pkg.dev/chip-k8s/devops/demo:v1.0.0
+      name: app
+      ports:
+        - containerPort: 8000
+          name: http
