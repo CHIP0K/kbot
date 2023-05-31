@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "helm.fullname" . }}
+  labels:
+    {{- include "helm.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "helm.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "helm.selectorLabels" . | nindent 8 }}
+    spec:
+      dnsConfig:
+        nameservers:
+          - 1.1.1.1
+      volumes:
+        - name: dev-mem
+          hostPath:
+            path: /dev/mem
+            type: ""
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          volumeMounts:
+          - mountPath: /dev/mem
+            name: dev-mem
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}-{{ .Values.image.arch | default "amd64" }}"
+          env:
+          - name: {{ .Values.secret.tokenName }}
+            value: {{ .Values.kbot_env.token }}
+            # valueFROM:
+            #   secretKeyRef:
+            #     key: {{ .Values.secret.tokenKey }}
+            #     name: {{ .Values.secret.name }}
+          # ports:
+          #   - name: http
+          #     containerPort: 80
+          #     protocol: TCP
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          resources:
