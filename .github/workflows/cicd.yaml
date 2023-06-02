@@ -49,7 +49,7 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - run: echo "VERSION=$(shell git describe --tags --abbrev=0)-$(shell git rev-parse --short HEAD)" >> $GITHUB_ENV # Ви можете зробити змінну середовища доступною для будь-яких наступних кроків у робочому циклі, визначивши або оновивши змінну середовища та записавши це у файл GITHUB_ENV середовища. https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-an-environment-variable
+      - run: echo "VERSION=$(git describe --tags --abbrev=0 )-$( git rev-parse --short HEAD)" >> $GITHUB_ENV # Ви можете зробити змінну середовища доступною для будь-яких наступних кроків у робочому циклі, визначивши або оновивши змінну середовища та записавши це у файл GITHUB_ENV середовища. https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-an-environment-variable
 
       - uses: mikefarah/yq@master
         with:
