@@ -36,6 +36,7 @@ jobs:
           APP: "kbot"
           # REGISTRY: ${{ secrets.DOCKERHUB_USERNAME }}
           REGISTRY: ghcr.io/chip0k
+          TARGETOS: linux
         run: make image push TARGETARCH=$TARGETARCH # Docker build and push step
       - name: Clean
         run: make clean TARGETARCH=$TARGETARCH
