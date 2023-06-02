@@ -49,8 +49,8 @@ image:
 	docker build -t ${REGISTRY}/${APP}:${VERSION}-${TARGETOS}-${TARGETARCH} --build-arg TARGETARCH=${TARGETARCH}  --build-arg TARGETOS=${TARGETOS} .
 
 push:
-	docker push ${REGISTRY}/${APP}:${VERSION}-${TARGETARCH}
+	docker push ${REGISTRY}/${APP}:${VERSION}-${TARGETOS}-${TARGETARCH}
 
 clean:
-	@echo=off docker rmi ${REGISTRY}/${APP}:${VERSION}-${TARGETARCH} 2> /dev/null || true
+	@echo=off docker rmi ${REGISTRY}/${APP}:${VERSION}-${TARGETOS}-${TARGETARCH} 2> /dev/null || true
 	@echo=off rm -rf kbot || true
