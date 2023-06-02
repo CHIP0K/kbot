@@ -11,6 +11,7 @@
 kubectl create namespace argocd
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 ```
+
 This default installation will have a self-signed certificate and cannot be accessed without a bit of extra work. Use the --insecure flag on all Argo CD CLI operations in this guide.
 
 ## Install Argo CD CLI
@@ -42,7 +43,9 @@ kubectl port-forward svc/argocd-server -n argocd 8080:443
 ```
 
 ### CLI installation
+
 ![asciicast](argocd_cli.gif)
 
 ### Web UI access
+
 ![asciicast](argocd_ui.gif)

@@ -2,10 +2,6 @@ name: KBOT-CICD # Ім"я пайплайну
 
 on: push # Запускати пайплайн при push події
 
-env:
-  APP: "kbot"
-  REGISTRY: ${{ secrets.DOCKERHUB_USERNAME }}
-
 jobs:
   ci:
     name: CI
@@ -25,6 +21,31 @@ jobs:
         with: # settings/secrets/actions
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+
       - name: Build and Push image
-        run: make image push
+        env:
+          APP: "kbot"
+          REGISTRY: ${{ secrets.DOCKERHUB_USERNAME }}
+        run: make image push # Docker build and push step
+
+  cd:
+    name: CD
+    needs: ci
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - run: echo "VERSION=$( git describe --tags --abbrev=0 )-$( git rev-parse --short HEAD )" >> $GITHUB_ENV # Ви можете зробити змінну середовища доступною для будь-яких наступних кроків у робочому циклі, визначивши або оновивши змінну середовища та записавши це у файл GITHUB_ENV середовища. https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-an-environment-variable
+
+      - uses: mikefarah/yq@master
+        with:
+          cmd: yq -i '.image.tag=strenv(VERSION)' helm/values.yaml # Змінимо значення змінної (image.tag) хелм чарту.
+
+      - run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git commit -am "update version $VERSION" 
+          git push
 
