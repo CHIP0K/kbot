@@ -1,14 +1,11 @@
 replicaCount: 1
-
 image:
   repository: "chip0k/kbot"
-  tag: "v1.0.0-4f8fc08"
+  tag: "v1.0.0-8ae45f3"
   arch: amd64
-
 secret:
   name: "kbot"
   tokenName: "TELE_TOKEN"
   tokenKey: "token"
-
 kbot_env:
   token: ""
