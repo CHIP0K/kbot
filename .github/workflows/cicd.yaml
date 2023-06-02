@@ -2,6 +2,9 @@ name: KBOT-CICD # Ім"я пайплайну
 
 on: push # Запускати пайплайн при push події
 
+env:
+  TARGETARCH: amd64
+
 jobs:
   ci:
     name: CI
@@ -26,7 +29,9 @@ jobs:
         env:
           APP: "kbot"
           REGISTRY: ${{ secrets.DOCKERHUB_USERNAME }}
-        run: make image push # Docker build and push step
+        run: make image push TARGETARCH=$TARGETARCH # Docker build and push step
+      - name: Clean
+        run: make clean TARGETARCH=$TARGETARCH
 
   cd:
     name: CD
@@ -41,13 +46,11 @@ jobs:
 
       - uses: mikefarah/yq@master
         with:
-          cmd: yq -i '.image.tag=strenv(VERSION)' helm/values.yaml # Змінимо значення змінної (image.tag) хелм чарту.
+          cmd: yq -i '.image.tag=strenv(VERSION) | .image.arch=strenv(TARGETARCH)' helm/values.yaml # Змінимо значення змінної (image.tag) хелм чарту.
 
-      - env:
-          GITHUB_TOKEN: ${{ secrets.CI_GITHUB_TOKEN }}
-        run: |
+      - run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
-          git commit -am "update version $VERSION" 
+          git commit -am "update version $VERSION"
           git push
 
