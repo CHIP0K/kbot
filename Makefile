@@ -1,5 +1,5 @@
 APP=$(shell basename -s .git $(shell git remote get-url origin))
-REGISTRY=chip0k
+REGISTRY=ghcr.io/chip0k
 VERSION=$(shell git describe --tags --abbrev=0)-$(shell git rev-parse --short HEAD)
 # linux darwin windows
 TARGETOS=linux
