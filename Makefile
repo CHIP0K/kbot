@@ -1,5 +1,5 @@
 APP=$(shell basename -s .git $(shell git remote get-url origin))
-REGYSTRY=chip0k
+REGISTRY=ghcr.io/chip0k
 VERSION=$(shell git describe --tags --abbrev=0)-$(shell git rev-parse --short HEAD)
 # linux darwin windows
 TARGETOS=linux
@@ -46,11 +46,11 @@ build: format
 	CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -v -o kbot -ldflags="-X="github.com/CHIP0K/kbot/cmd.appVersion=${VERSION}
 
 image:
-	docker build -t ${REGYSTRY}/${APP}:${VERSION}-${TARGETARCH} --build-arg TARGETARCH=${TARGETARCH}  --build-arg TARGETOS=${TARGETOS} .
+	docker build -t ${REGISTRY}/${APP}:${VERSION}-${TARGETARCH} --build-arg TARGETARCH=${TARGETARCH}  --build-arg TARGETOS=${TARGETOS} .
 
 push:
-	docker push ${REGYSTRY}/${APP}:${VERSION}-${TARGETARCH}
+	docker push ${REGISTRY}/${APP}:${VERSION}-${TARGETARCH}
 
 clean:
-	@echo=off docker rmi ${REGYSTRY}/${APP}:${VERSION}-${TARGETARCH} 2> /dev/null || true
+	@echo=off docker rmi ${REGISTRY}/${APP}:${VERSION}-${TARGETARCH} 2> /dev/null || true
 	@echo=off rm -rf kbot || true

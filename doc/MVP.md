@@ -1,6 +1,7 @@
 # AsciiArtify MVP deployment
 
 MVP Argo CD application
+
 ```yaml
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -28,5 +29,6 @@ spec:
 Presentation
 ![MPV DEMO](mpv.gif)
 
-### Trobleshuting
+## Trobleshuting
+
 If you have a random error with the "Ambassador app" on laptop apple silicon, connect the power cable, after it I didn't have a problem.
