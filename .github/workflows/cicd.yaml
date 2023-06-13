@@ -3,7 +3,7 @@ name: KBOT-CICD # Ім"я пайплайну
 on: 
   push: # Запускати пайплайн при push події
     branches:
-      - develop # В гілці develop
+      # - develop # В гілці develop
       - main
 
 env:
