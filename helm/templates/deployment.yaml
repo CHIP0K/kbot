@@ -30,13 +30,20 @@ spec:
           - mountPath: /dev/mem
             name: dev-mem
           image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}-{{ .Values.image.os | default "linux" }}-{{ .Values.image.arch | default "amd64" }}"
+          # env:
+          # - name: {{ .Values.secret.tokenName }}
+          #   value: {{ .Values.kbot_env.token }}
+
+          #   # valueFROM:
+          #   #   secretKeyRef:
+          #   #     key: {{ .Values.secret.tokenKey }}
+          #   #     name: {{ .Values.secret.name }}
           env:
           - name: {{ .Values.secret.tokenName }}
-            value: {{ .Values.kbot_env.token }}
-            # valueFROM:
-            #   secretKeyRef:
-            #     key: {{ .Values.secret.tokenKey }}
-            #     name: {{ .Values.secret.name }}
+            valueFrom:
+              secretKeyRef:
+                key: {{ .Values.secret.tokenKey }}
+                name: {{ .Values.secret.name }}
           # ports:
           #   - name: http
           #     containerPort: 80
